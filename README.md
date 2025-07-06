@@ -9,15 +9,15 @@
 - Simply paste this line into your script editor to load the UI Library:
 
 - Window Loader
-loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Library/refs/heads/main/Main2.lua"))()
+```loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Library/refs/heads/main/Main2.lua"))()```
 
 ---
 
 # 🚀 Quickstart
 
-``createWindow("Velonix Hub", 28) -- Title and optional logo size``
+```createWindow("Velonix Hub", 28) -- Title and optional logo size```
 
-``addLogo(12345678)               -- Replace with your actual decal ID``
+```addLogo(12345678)               -- Replace with your actual decal ID```
 
 
 ---
@@ -40,7 +40,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Libr
 ```createSection("Section", 1)```
 
 - Button
-```createButton("Button", 1, function()
+```
+createButton("Button", 1, function()
     print("Button Clicked!")
     Console("Button Clicked!")
 end)```
@@ -65,21 +66,13 @@ end)```
     print("Drop-down-Set: "..choice)
     Console("Drop-down-Set: "..choice)
 end)```
----
 
-
-
----
 # ⚙️ Settings Panel
 ```createSettingButton("Rejoin", function()
     print("Setting Button clicked!") 
     Console("Setting Button clicked!") 
 end)```
----
 
-
-
----
 # 🖥️ Notifications
 
 - Notification
@@ -88,43 +81,22 @@ end)```
 - Notification 2
 ```createNotify2("Title", "Description", 10) -- Custom duration (seconds)```
 
-
-
----
 # 🧾 Console Logging
 - You can print messages directly to the console tab:
 ```Console("Console Logged!")```
----
 
-
-
----
 # 📌 Requirements
 Works in Roblox Studio or Executor environment.
 Uses ScrollingFrame-based dynamic layout.
 UI is auto-styled with corner rounding and spacing.
----
 
-
-
----
 # 📣 Credits
 - Developer: itzC9
 - Concept Contributor: Nov
 - UI Design: Velonix Studio
----
-
-
-
----
 
 # 📜 License:
 - MIT License. You are free to use, modify, and redistribute with credit.
----
 
-
-
----
 💬 Contact
 For questions or issues, open an Issue or contact via Discord.
----
