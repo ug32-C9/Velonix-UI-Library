@@ -1,6 +1,6 @@
 # Velonix UI Library
 
-**Velonix UI Library** is a modular Roblox GUI framework designed for developers who want fast, functional, and stylish UI for their games or scripts. It provides a simple API to build tabbed interfaces, buttons, toggles, sliders, dropdowns, and more.
+**Velonix UI Library** is a modular Roblox GUI framework designed for developers who want fast, functional, and stylish UI for their scripts. It provides a simple API to build tabbed interfaces, buttons, toggles, sliders, dropdowns, and more.
 
 ---
 
