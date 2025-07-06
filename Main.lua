@@ -106,29 +106,51 @@ end
 
 function createTab(name, tabIndex)
 	-- Create tab button
-    local content = Instance.new("ScrollingFrame", mainFrame)
-    content.Name = tostring(tabIndex)
-    content.Size = UDim2.new(0, 280, 1, -60)
-    content.Position = UDim2.new(0, 110, 0, 50)
-    content.BackgroundTransparency = 1
-    content.ScrollBarThickness = 6
-    content.CanvasSize = UDim2.new(0, 0, 0, 500)
-    content.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    content.ClipsDescendants = true
-    content.Visible = false
+	local tab = Instance.new("TextButton")
+	tab.Size = UDim2.new(1, -10, 0, 40)
+	tab.Text = name
+	tab.Font = Enum.Font.SourceSansBold
+	tab.TextSize = 20
+	tab.TextColor3 = Color3.fromRGB(0, 0, 255)
+	tab.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+	tab.BackgroundTransparency = 0.3
+	tab.BorderSizePixel = 0
+	tab.Parent = tabFrame
 
-    local layout = Instance.new("UIListLayout", content)
-    layout.Padding = UDim.new(0, 5)
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
+	if addCorner then
+		addCorner(tab, 8)
+	end
+
+	local content = Instance.new("ScrollingFrame")
+	content.Name = tostring(tabIndex)
+	content.Size = UDim2.new(0, 280, 1, -60)
+	content.Position = UDim2.new(0, 110, 0, 50)
+	content.BackgroundTransparency = 1
+	content.ScrollBarThickness = 6
+	content.CanvasSize = UDim2.new(0, 0, 0, 500)
+	content.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	content.ClipsDescendants = true
+	content.Visible = false
+	content.Parent = mainFrame
+
+	if addCorner then
+		addCorner(content, 8)
+	end
+
+	local layout = Instance.new("UIListLayout", content)
+	layout.Padding = UDim.new(0, 5)
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
 
 	tab.MouseButton1Click:Connect(function()
 		if currentTab then currentTab.Visible = false end
 		currentTab = content
 		currentTab.Visible = true
 	end)
-	tabContainers[tabIndex] = {frame = content, buttonY = 0}
+
+	tabContainers[tabIndex] = {frame = content}
+
 	if name:lower() == "console" then
-		consoleTextBox = Instance.new("TextBox", content)
+		consoleTextBox = Instance.new("TextBox")
 		consoleTextBox.Size = UDim2.new(1, -10, 1, -10)
 		consoleTextBox.Position = UDim2.new(0, 5, 0, 5)
 		consoleTextBox.Text = "[Console]\n"
@@ -141,9 +163,12 @@ function createTab(name, tabIndex)
 		consoleTextBox.TextEditable = false
 		consoleTextBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 		consoleTextBox.TextColor3 = Color3.new(0, 1, 0)
-	end
+		consoleTextBox.Parent = content
 
-	tabY = tabY + 45
+		if addCorner then
+			addCorner(consoleTextBox, 8)
+		end
+	end
 end
 
 function createButton(name, tabIndex, callback)
