@@ -27,17 +27,32 @@ stroke.Color = Color3.fromRGB(0, 0, 255)
 stroke.Thickness = 2
 stroke.Transparency = 0.5
 
--- FRAMES
-local tabFrame = Instance.new("Frame", mainFrame)
+local tabFrame = Instance.new("ScrollingFrame", mainFrame)
 tabFrame.Size = UDim2.new(0, 100, 1, -50)
 tabFrame.Position = UDim2.new(0, 5, 0, 50)
+tabFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
+tabFrame.ScrollBarThickness = 6
+tabFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 tabFrame.BackgroundColor3 = Color3.fromRGB(127, 0, 0)
 tabFrame.BackgroundTransparency = 0.5
+tabFrame.ClipsDescendants = true
 
-local settingsFrame = Instance.new("Frame", mainFrame)
+local tabLayout = Instance.new("UIListLayout", tabFrame)
+tabLayout.Padding = UDim.new(0, 5)
+tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+local settingsFrame = Instance.new("ScrollingFrame", mainFrame)
 settingsFrame.Size = UDim2.new(0, 100, 1, -50)
 settingsFrame.Position = UDim2.new(1, -105, 0, 50)
+settingsFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
+settingsFrame.ScrollBarThickness = 6
 settingsFrame.BackgroundTransparency = 1
+settingsFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+settingsFrame.ClipsDescendants = true
+
+local settingsLayout = Instance.new("UIListLayout", settingsFrame)
+settingsLayout.Padding = UDim.new(0, 5)
+settingsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 -- OPEN BUTTON
 local openBtn = Instance.new("TextButton", gui)
@@ -58,6 +73,12 @@ local tabY, settingsY = 0, 0
 local tabContainers = {}
 local currentTab = nil
 local consoleTextBox
+
+function addCorner(instance, radius)
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, radius or 8)
+	corner.Parent = instance
+end
 
 -- FUNCTIONS
 function addLogo(index)
@@ -85,21 +106,21 @@ end
 
 function createTab(name, tabIndex)
 	-- Create tab button
-	local tab = Instance.new("TextButton", tabFrame)
-	tab.Size = UDim2.new(1, -10, 0, 40)
-	tab.Position = UDim2.new(0, 5, 0, tabY)
-	tab.Text = name
-	tab.Font = Enum.Font.SourceSansBold
-	tab.TextSize = 20
-	tab.TextColor3 = Color3.fromRGB(0, 0, 255)
-	tab.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	tab.BackgroundTransparency = 0.3
-	local content = Instance.new("Frame", mainFrame)
-	content.Name = "" .. tabIndex
-	content.Size = UDim2.new(0, 200, 1, -50)
-	content.Position = UDim2.new(0, 110, 0, 50)
-	content.BackgroundTransparency = 1
-	content.Visible = false
+    local content = Instance.new("ScrollingFrame", mainFrame)
+    content.Name = tostring(tabIndex)
+    content.Size = UDim2.new(0, 280, 1, -60)
+    content.Position = UDim2.new(0, 110, 0, 50)
+    content.BackgroundTransparency = 1
+    content.ScrollBarThickness = 6
+    content.CanvasSize = UDim2.new(0, 0, 0, 500)
+    content.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    content.ClipsDescendants = true
+    content.Visible = false
+
+    local layout = Instance.new("UIListLayout", content)
+    layout.Padding = UDim.new(0, 5)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+
 	tab.MouseButton1Click:Connect(function()
 		if currentTab then currentTab.Visible = false end
 		currentTab = content
@@ -128,9 +149,10 @@ end
 function createButton(name, tabIndex, callback)
 	local container = tabContainers[tabIndex]
 	if not container then return end
+
 	local btn = Instance.new("TextButton", container.frame)
 	btn.Size = UDim2.new(1, -10, 0, 40)
-	btn.Position = UDim2.new(0, 5, 0, container.buttonY)
+	btn.AutomaticSize = Enum.AutomaticSize.None
 	btn.Text = name
 	btn.Font = Enum.Font.SourceSansBold
 	btn.TextSize = 20
@@ -138,31 +160,49 @@ function createButton(name, tabIndex, callback)
 	btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	btn.BackgroundTransparency = 0.3
 	btn.MouseButton1Click:Connect(callback)
-	container.buttonY = container.buttonY + 45
+	btn.Position = nil
+	btn.BorderSizePixel = 0
+	btn.Parent = container.frame
+	if addCorner then
+	    addCorner(btn, 8)
+    end
 end
 
 function createLabel(text, subtext)
 	if not currentTab then return end
-	local label = Instance.new("TextLabel", currentTab)
+
+	local label = Instance.new("TextLabel")
 	label.Size = UDim2.new(1, -10, 0, 30)
-	label.Position = UDim2.new(0, 5, 0, 0)
 	label.Text = text .. " - " .. subtext
 	label.Font = Enum.Font.SourceSans
 	label.TextSize = 16
 	label.TextColor3 = Color3.new(1, 1, 1)
 	label.BackgroundTransparency = 1
+	label.BorderSizePixel = 0
+	label.Parent = currentTab
+
+	if addCorner then
+		addCorner(label, 8)
+	end
 end
 
 function createSection(name)
 	if not currentTab then return end
-	local section = Instance.new("TextLabel", currentTab)
+
+	local section = Instance.new("TextLabel")
 	section.Size = UDim2.new(1, -10, 0, 30)
-	section.Position = UDim2.new(0, 5, 0, 0)
 	section.Text = "== " .. name .. " =="
 	section.Font = Enum.Font.SourceSansBold
 	section.TextSize = 18
 	section.TextColor3 = Color3.fromRGB(0, 200, 255)
 	section.BackgroundTransparency = 1
+	section.TextXAlignment = Enum.TextXAlignment.Left
+	section.BorderSizePixel = 0
+	section.Parent = currentTab
+
+	if addCorner then
+		addCorner(section, 8)
+	end
 end
 
 function createNotify(title, description)
@@ -182,133 +222,171 @@ function createNotify2(title, description, duration)
 end
 
 function createSettingButton(name, callback)
-	local btn = Instance.new("TextButton", settingsFrame)
+	local btn = Instance.new("TextButton")
 	btn.Size = UDim2.new(1, -10, 0, 40)
-	btn.Position = UDim2.new(0, 5, 0, settingsY)
 	btn.Text = name
 	btn.Font = Enum.Font.SourceSansBold
 	btn.TextSize = 18
 	btn.TextColor3 = Color3.fromRGB(0, 0, 255)
 	btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 	btn.BackgroundTransparency = 0.3
+	btn.BorderSizePixel = 0
 	btn.MouseButton1Click:Connect(callback)
-	settingsY = settingsY + 45
+	btn.Parent = settingsFrame
+
+	if addCorner then
+		addCorner(btn, 8)
+	end
 end
 
 function createToggle(name, tabIndex, default, callback)
 	local container = tabContainers[tabIndex]
 	if not container then return end
-	local toggle = Instance.new("TextButton", container.frame)
+
+	local toggle = Instance.new("TextButton")
 	toggle.Size = UDim2.new(1, -10, 0, 40)
-	toggle.Position = UDim2.new(0, 5, 0, container.buttonY)
-	local state = default
-	toggle.Text = name .. ": " .. (state and "ON" or "OFF")
 	toggle.Font = Enum.Font.SourceSansBold
 	toggle.TextSize = 18
-	toggle.TextColor3 = Color3.new(1,1,1)
-	toggle.BackgroundColor3 = Color3.fromRGB(0,170,0)
+	toggle.TextColor3 = Color3.new(1, 1, 1)
+	toggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
 	toggle.BackgroundTransparency = 0.2
+	toggle.BorderSizePixel = 0
+
+	local state = default
+	toggle.Text = name .. ": " .. (state and "ON" or "OFF")
+
 	toggle.MouseButton1Click:Connect(function()
 		state = not state
 		toggle.Text = name .. ": " .. (state and "ON" or "OFF")
 		callback(state)
 	end)
-	container.buttonY = container.buttonY + 45
+
+	toggle.Parent = container.frame
+
+	if addCorner then
+		addCorner(toggle, 8)
+	end
 end
 
 function createTextBox(tabIndex, placeholderText, callback)
 	local container = tabContainers[tabIndex]
 	if not container then return end
-	local box = Instance.new("TextBox", container.frame)
+
+	local box = Instance.new("TextBox")
 	box.Size = UDim2.new(1, -10, 0, 35)
-	box.Position = UDim2.new(0, 5, 0, container.buttonY)
 	box.PlaceholderText = placeholderText
 	box.Font = Enum.Font.SourceSans
 	box.TextSize = 16
-	box.TextColor3 = Color3.new(1,1,1)
-	box.BackgroundColor3 = Color3.fromRGB(50,50,50)
+	box.TextColor3 = Color3.new(1, 1, 1)
+	box.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 	box.BackgroundTransparency = 0.1
 	box.ClearTextOnFocus = false
+	box.Text = ""
+	box.BorderSizePixel = 0
+
 	box.FocusLost:Connect(function(enter)
 		if enter then callback(box.Text) end
 	end)
-	container.buttonY = container.buttonY + 40
+
+	box.Parent = container.frame
+
+	if addCorner then
+		addCorner(box, 8)
+	end
 end
 
 function createDropdown(tabIndex, title, options, callback)
 	local container = tabContainers[tabIndex]
 	if not container then return end
-	local dropdown = Instance.new("TextButton", container.frame)
+
+	local dropdown = Instance.new("TextButton")
 	dropdown.Size = UDim2.new(1, -10, 0, 35)
-	dropdown.Position = UDim2.new(0, 5, 0, container.buttonY)
-	local index = 1
-	dropdown.Text = title .. ": " .. options[index]
 	dropdown.Font = Enum.Font.SourceSansBold
 	dropdown.TextSize = 16
-	dropdown.TextColor3 = Color3.new(1,1,1)
-	dropdown.BackgroundColor3 = Color3.fromRGB(40,40,40)
+	dropdown.TextColor3 = Color3.new(1, 1, 1)
+	dropdown.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 	dropdown.BackgroundTransparency = 0.1
+	dropdown.BorderSizePixel = 0
+
+	local index = 1
+	dropdown.Text = title .. ": " .. options[index]
+
 	dropdown.MouseButton1Click:Connect(function()
 		index = index % #options + 1
 		dropdown.Text = title .. ": " .. options[index]
 		callback(options[index])
 	end)
-	container.buttonY = container.buttonY + 40
+
+	dropdown.Parent = container.frame
+
+	if addCorner then
+		addCorner(dropdown, 8)
+	end
 end
 
 function createDivider(tabIndex)
 	local container = tabContainers[tabIndex]
 	if not container then return end
-	local divider = Instance.new("Frame", container.frame)
+
+	local divider = Instance.new("Frame")
 	divider.Size = UDim2.new(1, -10, 0, 2)
-	divider.Position = UDim2.new(0, 5, 0, container.buttonY)
-	divider.BackgroundColor3 = Color3.new(1,1,1)
+	divider.BackgroundColor3 = Color3.new(1, 1, 1)
 	divider.BackgroundTransparency = 0.3
 	divider.BorderSizePixel = 0
-	container.buttonY = container.buttonY + 10
+	divider.Parent = container.frame
 end
 
 function createSlider(tabIndex, title, min, max, default, callback)
 	local container = tabContainers[tabIndex]
 	if not container then return end
 
-	local label = Instance.new("TextLabel", container.frame)
+	local label = Instance.new("TextLabel")
 	label.Size = UDim2.new(1, -10, 0, 20)
-	label.Position = UDim2.new(0, 5, 0, container.buttonY)
 	label.Text = title .. ": " .. default
 	label.Font = Enum.Font.SourceSansBold
 	label.TextSize = 14
-	label.TextColor3 = Color3.new(1,1,1)
+	label.TextColor3 = Color3.new(1, 1, 1)
 	label.BackgroundTransparency = 1
-	container.buttonY = container.buttonY + 20
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.BorderSizePixel = 0
+	label.Parent = container.frame
 
-	local slider = Instance.new("Frame", container.frame)
+	local slider = Instance.new("Frame")
 	slider.Size = UDim2.new(1, -10, 0, 20)
-	slider.Position = UDim2.new(0, 5, 0, container.buttonY)
-	slider.BackgroundColor3 = Color3.fromRGB(100,100,100)
+	slider.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+	slider.BorderSizePixel = 0
+	slider.Parent = container.frame
+	addCorner(slider)
 
-	local fill = Instance.new("Frame", slider)
-	fill.Size = UDim2.new((default - min)/(max - min), 0, 1, 0)
-	fill.BackgroundColor3 = Color3.fromRGB(0,170,255)
+	local fill = Instance.new("Frame")
+	fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+	fill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 	fill.BorderSizePixel = 0
+	fill.ZIndex = 2
+	fill.Name = "Fill"
+	fill.Parent = slider
+	addCorner(fill)
 
 	local dragging = false
-	slider.InputBegan:Connect(function(i)
-		if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true end
+	slider.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+		end
 	end)
-	slider.InputEnded:Connect(function(i)
-		if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+	slider.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = false
+		end
 	end)
-	UserInputService.InputChanged:Connect(function(i)
-		if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
-			local rel = math.clamp((i.Position.X - slider.AbsolutePosition.X)/slider.AbsoluteSize.X,0,1)
-			fill.Size = UDim2.new(rel,0,1,0)
-			local val = math.floor(min + (max-min)*rel)
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+			local rel = math.clamp((input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X, 0, 1)
+			fill.Size = UDim2.new(rel, 0, 1, 0)
+			local val = math.floor(min + (max - min) * rel)
 			label.Text = title .. ": " .. val
 			callback(val)
 		end
 	end)
-	container.buttonY = container.buttonY + 25
 end
 
 function Console(text)
