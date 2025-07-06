@@ -172,247 +172,244 @@ function createTab(name, tabIndex)
 end
 
 function createButton(name, tabIndex, callback)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local btn = Instance.new("TextButton", container.frame)
-	btn.Size = UDim2.new(1, -10, 0, 40)
-	btn.AutomaticSize = Enum.AutomaticSize.None
-	btn.Text = name
-	btn.Font = Enum.Font.SourceSansBold
-	btn.TextSize = 20
-	btn.TextColor3 = Color3.fromRGB(0, 0, 255)
-	btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	btn.BackgroundTransparency = 0.3
-	btn.MouseButton1Click:Connect(callback)
-	btn.Position = nil
-	btn.BorderSizePixel = 0
-	btn.Parent = container.frame
-	if addCorner then
-	    addCorner(btn, 8)
+    local container = tabContainers[tabIndex]
+    if not container then return end
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.Text = name
+    btn.Font = Enum.Font.SourceSansBold
+    btn.TextSize = 20
+    btn.TextColor3 = Color3.fromRGB(0, 0, 255)
+    btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    btn.BackgroundTransparency = 0.3
+    btn.BorderSizePixel = 0
+    btn.MouseButton1Click:Connect(callback)
+    btn.Parent = container.frame
+    if addCorner then
+        addCorner(btn, 8)
     end
 end
 
 function createLabel(text, subtext)
-	if not currentTab then return end
-
-	local label = Instance.new("TextLabel")
-	label.Size = UDim2.new(1, -10, 0, 30)
-	label.Text = text .. " - " .. subtext
-	label.Font = Enum.Font.SourceSans
-	label.TextSize = 16
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundTransparency = 1
-	label.BorderSizePixel = 0
-	label.Parent = currentTab
-
-	if addCorner then
-		addCorner(label, 8)
-	end
+    if not currentTab then return end
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -10, 0, 30)
+    label.Text = text .. " - " ..
+    subtext label.Font = Enum.Font.SourceSans
+    label.TextSize = 16
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.BackgroundTransparency = 1
+    label.BorderSizePixel = 0
+    label.Parent = currentTab
+    if addCorner then
+        addCorner(label, 8)
+    end
 end
 
 function createSection(name)
-	if not currentTab then return end
-
-	local section = Instance.new("TextLabel")
-	section.Size = UDim2.new(1, -10, 0, 30)
-	section.Text = "== " .. name .. " =="
-	section.Font = Enum.Font.SourceSansBold
-	section.TextSize = 18
-	section.TextColor3 = Color3.fromRGB(0, 200, 255)
-	section.BackgroundTransparency = 1
-	section.TextXAlignment = Enum.TextXAlignment.Left
-	section.BorderSizePixel = 0
-	section.Parent = currentTab
-
-	if addCorner then
-		addCorner(section, 8)
-	end
+    if not currentTab then return end
+    local section = Instance.new("TextLabel")
+    section.Size = UDim2.new(1, -10, 0, 30)
+    section.Text = "== " .. name .. " =="
+    section.Font = Enum.Font.SourceSansBold
+    section.TextSize = 18
+    section.TextColor3 = Color3.fromRGB(0, 200, 255)
+    section.BackgroundTransparency = 1
+    section.TextXAlignment = Enum.TextXAlignment.Left
+    section.BorderSizePixel = 0
+    section.Parent = currentTab
+    if addCorner then
+        addCorner(section, 8)
+    end
 end
 
 function createNotify(title, description)
-	game.StarterGui:SetCore("SendNotification", {
-		Title = title,
-		Text = description,
-		Duration = 5
-	})
-end
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = description,
+        Duration = 5
+    })
+    end
 
 function createNotify2(title, description, duration)
-	game.StarterGui:SetCore("SendNotification", {
-		Title = title,
-		Text = description,
-		Duration = duration or 10
-	})
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = description,
+        Duration = duration or 10
+    })
 end
 
 function createSettingButton(name, callback)
-	local btn = Instance.new("TextButton")
-	btn.Size = UDim2.new(1, -10, 0, 40)
-	btn.Text = name
-	btn.Font = Enum.Font.SourceSansBold
-	btn.TextSize = 18
-	btn.TextColor3 = Color3.fromRGB(0, 0, 255)
-	btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	btn.BackgroundTransparency = 0.3
-	btn.BorderSizePixel = 0
-	btn.MouseButton1Click:Connect(callback)
-	btn.Parent = settingsFrame
-
-	if addCorner then
-		addCorner(btn, 8)
-	end
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.Text = name
+    btn.Font = Enum.Font.SourceSansBold
+    btn.TextSize = 18
+    btn.TextColor3 = Color3.fromRGB(0, 0, 255)
+    btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    btn.BackgroundTransparency = 0.3
+    btn.BorderSizePixel = 0
+    btn.MouseButton1Click:Connect(callback)
+        btn.Parent = settingsFrame
+    if addCorner then
+        addCorner(btn, 8)
+    end
 end
 
 function createToggle(name, tabIndex, default, callback)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local toggle = Instance.new("TextButton")
-	toggle.Size = UDim2.new(1, -10, 0, 40)
-	toggle.Font = Enum.Font.SourceSansBold
-	toggle.TextSize = 18
-	toggle.TextColor3 = Color3.new(1, 1, 1)
-	toggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-	toggle.BackgroundTransparency = 0.2
-	toggle.BorderSizePixel = 0
-
-	local state = default
-	toggle.Text = name .. ": " .. (state and "ON" or "OFF")
-
-	toggle.MouseButton1Click:Connect(function()
-		state = not state
-		toggle.Text = name .. ": " .. (state and "ON" or "OFF")
-		callback(state)
-	end)
-
-	toggle.Parent = container.frame
-
-	if addCorner then
-		addCorner(toggle, 8)
-	end
+    local container = tabContainers[tabIndex]
+    if not container then
+        return
+    end
+    
+    local toggle = Instance.new("TextButton")
+    toggle.Size = UDim2.new(1, -10, 0, 40)
+    toggle.Font = Enum.Font.SourceSansBold
+    toggle.TextSize = 18
+    toggle.TextColor3 = Color3.new(1, 1, 1)
+    toggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+    toggle.BackgroundTransparency = 0.2
+    toggle.BorderSizePixel = 0
+    local state = default
+    toggle.Text = name .. ": " .. (state and "ON" or "OFF")
+    toggle.MouseButton1Click:Connect(function()
+    state = not state
+    toggle.Text = name .. ": " .. (state and "ON" or "OFF")
+        callback(state)
+    end)
+    toggle.Parent = container.frame
+    if addCorner then
+        addCorner(toggle, 8)
+    end
 end
 
 function createTextBox(tabIndex, placeholderText, callback)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local box = Instance.new("TextBox")
-	box.Size = UDim2.new(1, -10, 0, 35)
-	box.PlaceholderText = placeholderText
-	box.Font = Enum.Font.SourceSans
-	box.TextSize = 16
-	box.TextColor3 = Color3.new(1, 1, 1)
-	box.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-	box.BackgroundTransparency = 0.1
-	box.ClearTextOnFocus = false
-	box.Text = ""
-	box.BorderSizePixel = 0
-
-	box.FocusLost:Connect(function(enter)
-		if enter then callback(box.Text) end
-	end)
-
-	box.Parent = container.frame
-
-	if addCorner then
-		addCorner(box, 8)
-	end
-end
+    local container = tabContainers[tabIndex]
+    if not container then
+        return
+    end
+    local box = Instance.new("TextBox")
+    box.Size = UDim2.new(1, -10, 0, 35)
+    box.PlaceholderText = placeholderText
+    box.Font = Enum.Font.SourceSans
+    box.TextSize = 16
+    box.TextColor3 = Color3.new(1, 1, 1)
+    box.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    box.BackgroundTransparency = 0.1
+    box.ClearTextOnFocus = false
+    box.Text = ""
+    box.BorderSizePixel = 0
+    box.FocusLost:Connect(function(enter)
+    if enter then
+        callback(box.Text)
+    end
+end)
+    box.Parent = container.frame
+        if addCorner then
+            addCorner(box, 8)
+        end
+    end
 
 function createDropdown(tabIndex, title, options, callback)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local dropdown = Instance.new("TextButton")
-	dropdown.Size = UDim2.new(1, -10, 0, 35)
-	dropdown.Font = Enum.Font.SourceSansBold
-	dropdown.TextSize = 16
-	dropdown.TextColor3 = Color3.new(1, 1, 1)
-	dropdown.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	dropdown.BackgroundTransparency = 0.1
-	dropdown.BorderSizePixel = 0
-
-	local index = 1
-	dropdown.Text = title .. ": " .. options[index]
-
-	dropdown.MouseButton1Click:Connect(function()
-		index = index % #options + 1
-		dropdown.Text = title .. ": " .. options[index]
-		callback(options[index])
-	end)
-
-	dropdown.Parent = container.frame
-
-	if addCorner then
-		addCorner(dropdown, 8)
-	end
+    
+    local container = tabContainers[tabIndex]
+    if not container then
+        return
+    end
+    
+    local dropdown = Instance.new("TextButton")
+    dropdown.Size = UDim2.new(1, -10, 0, 35)
+    dropdown.Font = Enum.Font.SourceSansBold
+    dropdown.TextSize = 16
+    dropdown.TextColor3 = Color3.new(1, 1, 1)
+    dropdown.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    dropdown.BackgroundTransparency = 0.1
+    dropdown.BorderSizePixel = 0
+    
+    local index = 1 dropdown.Text = title .. ": " ..
+        options[index]
+        dropdown.MouseButton1Click:Connect(function()
+        index = index % #options + 1
+        dropdown.Text = title .. ": " ..
+        options[index]
+        callback(options[index])
+    end)
+    dropdown.Parent = container.frame
+    if addCorner then
+        addCorner(dropdown, 8)
+    end
 end
 
 function createDivider(tabIndex)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local divider = Instance.new("Frame")
-	divider.Size = UDim2.new(1, -10, 0, 2)
-	divider.BackgroundColor3 = Color3.new(1, 1, 1)
-	divider.BackgroundTransparency = 0.3
-	divider.BorderSizePixel = 0
-	divider.Parent = container.frame
+    
+    local container = tabContainers[tabIndex]
+    if not container then
+        return
+    end
+    local divider = Instance.new("Frame")
+    divider.Size = UDim2.new(1, -10, 0, 2)
+    divider.BackgroundColor3 = Color3.new(1, 1, 1)
+    divider.BackgroundTransparency = 0.3
+    divider.BorderSizePixel = 0
+    divider.Parent = container.frame
 end
 
 function createSlider(tabIndex, title, min, max, default, callback)
-	local container = tabContainers[tabIndex]
-	if not container then return end
-
-	local label = Instance.new("TextLabel")
-	label.Size = UDim2.new(1, -10, 0, 20)
-	label.Text = title .. ": " .. default
-	label.Font = Enum.Font.SourceSansBold
-	label.TextSize = 14
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundTransparency = 1
-	label.TextXAlignment = Enum.TextXAlignment.Left
-	label.BorderSizePixel = 0
-	label.Parent = container.frame
-
-	local slider = Instance.new("Frame")
-	slider.Size = UDim2.new(1, -10, 0, 20)
-	slider.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-	slider.BorderSizePixel = 0
-	slider.Parent = container.frame
-	addCorner(slider)
-
-	local fill = Instance.new("Frame")
-	fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-	fill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-	fill.BorderSizePixel = 0
-	fill.ZIndex = 2
-	fill.Name = "Fill"
-	fill.Parent = slider
-	addCorner(fill)
-
-	local dragging = false
-	slider.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			dragging = true
-		end
-	end)
-	slider.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			dragging = false
-		end
-	end)
-	UserInputService.InputChanged:Connect(function(input)
-		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-			local rel = math.clamp((input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X, 0, 1)
-			fill.Size = UDim2.new(rel, 0, 1, 0)
-			local val = math.floor(min + (max - min) * rel)
-			label.Text = title .. ": " .. val
-			callback(val)
-		end
-	end)
+    
+    local container = tabContainers[tabIndex]
+    if not container then
+        return
+    end
+    
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -10, 0, 20)
+    label.Text = title .. ": " ..
+    default label.Font = Enum.Font.SourceSansBold
+    label.TextSize = 14
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.BackgroundTransparency = 1
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.BorderSizePixel = 0
+    label.Parent = container.frame
+    
+    local slider = Instance.new("Frame")
+    slider.Size = UDim2.new(1, -10, 0, 20)
+    slider.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    slider.BorderSizePixel = 0
+    slider.Parent = container.frame
+    addCorner(slider)
+    
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+    fill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    fill.BorderSizePixel = 0
+    fill.ZIndex = 2
+    fill.Name = "Fill"
+    fill.Parent = slider
+    addCorner(fill)
+    
+    local dragging = false
+    slider.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+    end
+end)
+    slider.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    dragging = false
+    end
+end)
+    UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local rel = math.clamp((input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X, 0, 1)
+        fill.Size = UDim2.new(rel, 0, 1, 0)
+        local val = math.floor(min + (max - min) * rel)
+        label.Text = title .. ": " .. val callback(val)
+        end
+    end)
 end
+
+
 
 function Console(text)
 	if consoleTextBox then
