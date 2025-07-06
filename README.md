@@ -15,15 +15,17 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Libr
 
 # 🚀 Quickstart
 
-```createWindow("Velonix Hub", 28) -- Title and optional logo size```
-```addLogo(12345678)               -- Replace with your actual decal ID```
+``createWindow("Velonix Hub", 28) -- Title and optional logo size``
+
+``addLogo(12345678)               -- Replace with your actual decal ID``
 
 
 ---
 
 # 📂 Creating Tabs
-
-```createTab("Home", 1)``
+- Example Tab
+```createTab("Home", 1)```
+- Optional Tab
 ```createTab("Console", 2)```
 
 
