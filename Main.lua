@@ -9,6 +9,7 @@ gui.ResetOnSpawn=false
 
 -- Main Frame settings
 local mainFrame = Instance.new("Frame", gui)
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 8)
 mainFrame.Size=UDim2.new(0,500,0,300);
 mainFrame.Position=UDim2.new(0.3,0,0.3,0)
 mainFrame.BackgroundColor3=Color3.fromRGB(127,0,0);
@@ -26,6 +27,7 @@ stroke.Transparency=0.5
 
 -- Scrollable Tab Frame
 local tabFrame=Instance.new("ScrollingFrame", mainFrame)
+Instance.new("UICorner", tabFrame).CornerRadius = UDim.new(0, 8)
 tabFrame.Size=UDim2.new(0,100,1,-50);
 tabFrame.Position=UDim2.new(0,5,0,50)
 tabFrame.BackgroundColor3=Color3.fromRGB(127,0,0);
@@ -35,6 +37,7 @@ tabFrame.CanvasSize=UDim2.new(0,0,0,0)
 
 -- Settings Frame
 local settingsFrame=Instance.new("Frame", mainFrame)
+Instance.new("UICorner", settingsFrame).CornerRadius = UDim.new(0, 8)
 settingsFrame.Size=UDim2.new(0,100,1,-50);
 settingsFrame.Position=UDim2.new(1,-105,0,50)
 
@@ -48,6 +51,7 @@ openBtn.Selectable=true;
 openBtn.Draggable=true
 
 local openText=Instance.new("TextLabel", openBtn)
+Instance.new("UICorner", openBtn).CornerRadius = UDim.new(0, 8)
 openText.Size=UDim2.new(1,0,1,0);
 openText.BackgroundTransparency=1;
 openText.Text="Open"
@@ -60,17 +64,6 @@ openBtn.InputBegan:Connect(function(i)
         openText.Text=mainFrame.Visible and "Close" or "Open"
     end
 end)
-
--- Ui Corners
-Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 8)
-Instance.new("UICorner", tabFrame).CornerRadius = UDim.new(0, 8)
-Instance.new("UICorner", settingsFrame).CornerRadius = UDim.new(0, 8)
-Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
-Instance.new("UICorner", dropDown).CornerRadius = UDim.new(0, 6)
-Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(0, 6)
-Instance.new("UICorner", textBox).CornerRadius = UDim.new(0, 6)
-Instance.new("UICorner", openBtn).CornerRadius = UDim.new(0, 8)
-Instance.new("UICorner", consoleBox).CornerRadius = UDim.new(0, 6)
 
 local tabY=0;
 local settingsY=0;
@@ -116,7 +109,7 @@ function createTab(name,idx)
     btn.BackgroundTransparency=0.3
     
     local ctr=Instance.new("Frame", mainFrame)
-    ctr.Name="Tab_"..idx; 
+    ctr.Name=""..idx; 
     ctr.Size=UDim2.new(0,200,1,-50); 
     ctr.Position=UDim2.new(0,110,0,50)
     ctr.BackgroundTransparency=1;
@@ -133,6 +126,7 @@ function createTab(name,idx)
     tabFrame.CanvasSize=UDim2.new(0,0,0,tabY)
     if name:lower()=="console" then
         consoleBox=Instance.new("TextBox",ctr)
+        Instance.new("UICorner", consoleBox).CornerRadius = UDim.new(0, 6)
         consoleBox.Size=UDim2.new(1,-10,1,-10);
         consoleBox.Position=UDim2.new(0,5,0,5)
         consoleBox.Text="Console Loaded!";
@@ -153,6 +147,7 @@ function createButton(txt,idx,cb)
     end
     
     local b=Instance.new("TextButton",c.frame)
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
     b.Size=UDim2.new(1,-10,0,40);
     b.Position=UDim2.new(0,5,0,c.y)
     b.Text=txt;
@@ -173,6 +168,7 @@ function createToggle(txt,idx,def,cb)
     end
     
     local b=Instance.new("TextButton",c.frame)
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
     b.Size=UDim2.new(1,-10,0,40); 
     b.Position=UDim2.new(0,5,0,c.y)
     
@@ -197,6 +193,7 @@ function createTextBox(idx,ph,cb)
     end
     
     local tb=Instance.new("TextBox",c.frame)
+    Instance.new("UICorner", tb).CornerRadius = UDim.new(0, 6)
     tb.Size=UDim2.new(1,-10,0,35); 
     tb.Position=UDim2.new(0,5,0,c.y)
     tb.PlaceholderText=ph; 
@@ -222,6 +219,7 @@ function createDropdown(idx,ttl,opts,cb)
     end
     
     local d=Instance.new("TextButton",c.frame)
+    Instance.new("UICorner", d).CornerRadius = UDim.new(0, 6)
     d.Size=UDim2.new(1,-10,0,35); 
     d.Position=UDim2.new(0,5,0,c.y)
     
