@@ -190,8 +190,9 @@ function createButton(name, tabIndex, callback)
     end
 end
 
-function createLabel(text, subtext)
-    if not currentTab then return end
+function createLabel(text, subtext, tabIndex)
+    local container = tabContainers[tabIndex]
+    if not container then return end
     local label = Instance.new("TextLabel")
     label.Size = UDim2.new(1, -10, 0, 30)
     label.Text = text .. " - " ..
@@ -206,8 +207,9 @@ function createLabel(text, subtext)
     end
 end
 
-function createSection(name)
-    if not currentTab then return end
+function createSection(name, tabIndex)
+    local container = tabContainers[tabIndex]
+    if not container then return end
     local section = Instance.new("TextLabel")
     section.Size = UDim2.new(1, -10, 0, 30)
     section.Text = "== " .. name .. " =="
