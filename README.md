@@ -9,7 +9,7 @@
 Simply paste this line into your script to load the UI Library:
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Library/refs/heads/main/Main3.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ug32-C9/Velonix-UI-Library/refs/heads/main/Main3.lua"))()
 ```
 
 ---
@@ -105,7 +105,7 @@ Console("Console Logged!")
 
 ## 📣 Credits
 
-- **Developer:** [itzC9](https://github.com/itzC9)
+- **Developer:** [itzC9](https://github.com/ug32-C9)
 - **Concept Contributor:** Nov
 - **UI Design:** Velonix Studio
 
@@ -119,4 +119,4 @@ MIT License. You are free to use, modify, and redistribute with credit.
 
 ## 💬 Contact
 
-For questions or issues, open an [Issue](https://github.com/itzC9/Velonix-UI-Library/issues) or contact via Discord.
+For questions or issues, open an [Issue](https://github.com/ug32-C9/Velonix-UI-Library/issues) or contact via Discord.
