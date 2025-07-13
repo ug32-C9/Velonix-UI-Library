@@ -9,7 +9,7 @@
 Simply paste this line into your script to load the UI Library:
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Library/refs/heads/main/Main2.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/itzC9/Velonix-UI-Library/refs/heads/main/Main3.lua"))()
 ```
 
 ---
