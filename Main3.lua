@@ -52,6 +52,22 @@ local settingsLayout = Instance.new("UIListLayout", settingsFrame)
 settingsLayout.Padding = UDim.new(0, 5)
 settingsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
+local openBtn = Instance.new("TextButton", gui)
+openBtn.Size = UDim2.new(0, 100, 0, 40) -- wider and shorter
+openBtn.Position = UDim2.new(0, 20, 0.5, -20) -- vertically centered
+openBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+openBtn.Text = "Open"
+openBtn.Font = Enum.Font.GothamBold
+openBtn.TextSize = 16
+openBtn.TextColor3 = Color3.new(1, 1, 1)
+openBtn.ZIndex = 1000
+openBtn.Active = true
+openBtn.Draggable = true
+Instance.new("UICorner", openBtn).CornerRadius = UDim.new(0, 6)
+
+openBtn.MouseButton1Click:Connect(function()
+	mainFrame.Visible = not mainFrame.Visible
+end)
 -- Variables
 local tabContainers = {}
 local currentTab = nil
@@ -63,22 +79,9 @@ local function addCorner(instance, radius)
 	corner.Parent = instance
 end
 
--- UI API
-function createOpen(imageId)
-	local openBtn = Instance.new("ImageButton", gui)
-	openBtn.Size = UDim2.new(0, 50, 0, 50)
-	openBtn.Position = UDim2.new(0, 20, 0.5, -25)
-	openBtn.BackgroundTransparency = 1
-	openBtn.Image = "rbxassetid://" .. tostring(imageId)
-	openBtn.ZIndex = 1000
-	openBtn.Active = true
-	openBtn.Draggable = true
-	openBtn.MouseButton1Click:Connect(function()
-		mainFrame.Visible = not mainFrame.Visible
-	end)
-	addCorner(openBtn)
-end
+addCorner(openBtn, 8)
 
+-- UI API
 function createLogo(imageId)
 	local logo = Instance.new("ImageLabel", mainFrame)
 	logo.Size = UDim2.new(0, 40, 0, 40)
