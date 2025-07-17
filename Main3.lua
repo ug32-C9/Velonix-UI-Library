@@ -4,6 +4,23 @@ local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+local ThemeColors = {
+	Green = {Main = Color3.fromRGB(0, 170, 0), Accent = Color3.fromRGB(0, 255, 0)},
+	White = {Main = Color3.fromRGB(240, 240, 240), Accent = Color3.fromRGB(200, 200, 200)},
+	Red = {Main = Color3.fromRGB(170, 0, 0), Accent = Color3.fromRGB(255, 0, 0)},
+	Forest = {Main = Color3.fromRGB(34, 139, 34), Accent = Color3.fromRGB(50, 205, 50)},
+	Dark = {Main = Color3.fromRGB(25, 25, 25), Accent = Color3.fromRGB(80, 80, 80)},
+	Light = {Main = Color3.fromRGB(220, 220, 220), Accent = Color3.fromRGB(180, 180, 180)},
+	Sun = {Main = Color3.fromRGB(255, 255, 153), Accent = Color3.fromRGB(255, 204, 0)},
+	Sunrise = {Main = Color3.fromRGB(255, 94, 98), Accent = Color3.fromRGB(255, 178, 102)},
+	Water = {Main = Color3.fromRGB(0, 255, 255), Accent = Color3.fromRGB(0, 150, 150)},
+	Blaze = {Main = Color3.fromRGB(255, 87, 34), Accent = Color3.fromRGB(255, 138, 101)},
+	Flame = {Main = Color3.fromRGB(255, 51, 51), Accent = Color3.fromRGB(255, 204, 0)},
+	Purple = {Main = Color3.fromRGB(138, 43, 226), Accent = Color3.fromRGB(186, 85, 211)},
+	Moon = {Main = Color3.fromRGB(200, 200, 255), Accent = Color3.fromRGB(150, 150, 200)},
+	Premium = {Main = Color3.fromRGB(40, 40, 40), Accent = Color3.fromRGB(0, 200, 255)} -- Premium look
+}
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "Velonix_Library"
 gui.ResetOnSpawn = false
@@ -81,14 +98,49 @@ end
 
 addCorner(openBtn, 8)
 
+local ThemeElements = {
+	mainFrame = mainFrame,
+	tabButtons = {},
+	settingButtons = {},
+	uiStroke = stroke,
+}
+
 -- UI API
+function UIColor(name)
+	local theme = ThemeColors[name]
+	if not theme then
+		warn("[Velonix UI] Unknown theme: " .. tostring(name))
+		return
+	end
+
+	-- Main container color
+	ThemeElements.mainFrame.BackgroundColor3 = theme.Main
+
+	-- Stroke
+	if ThemeElements.uiStroke then
+		ThemeElements.uiStroke.Color = theme.Accent
+	end
+
+	-- Tab buttons
+	for _, tab in ipairs(ThemeElements.tabButtons) do
+		tab.BackgroundColor3 = theme.Main
+		tab.TextColor3 = theme.Accent
+	end
+
+	-- Settings buttons
+	for _, btn in ipairs(ThemeElements.settingButtons) do
+		btn.BackgroundColor3 = theme.Main
+		btn.TextColor3 = theme.Accent
+	end
+end
+
 function createLogo(imageId)
 	local logo = Instance.new("ImageLabel", mainFrame)
 	logo.Size = UDim2.new(0, 40, 0, 40)
 	logo.Position = UDim2.new(0, 5, 0, 5)
 	logo.Image = "rbxassetid://" .. tostring(imageId)
 	logo.BackgroundTransparency = 1
-	-- Animate
+	logo.ImageTransparency = 1 -- Make it invisible initially
 	TweenService:Create(logo, TweenInfo.new(1), {ImageTransparency = 0}):Play()
 end
 
@@ -138,7 +190,8 @@ function createTab(name, tabIndex)
 		currentTab = content
 		currentTab.Visible = true
 	end)
-
+    -- inside createTab
+    table.insert(ThemeElements.createButton, createToggle, createWindow, createLabel, createTextBox, tab)
 	tabContainers[tabIndex] = {frame = content}
 end
 
@@ -222,33 +275,62 @@ function createSettingButton(name, callback)
 	btn.MouseButton1Click:Connect(callback)
 	btn.Parent = settingsFrame
 	addCorner(btn, 8)
+
+	table.insert(ThemeElements.settingButtons, btn) -- ✅ Proper placement
 end
 
+
+
 function createToggle(name, tabIndex, default, callback)
-    local container = tabContainers[tabIndex]
-    if not container then
-        return
-    end
-    
-    local toggle = Instance.new("TextButton")
-    toggle.Size = UDim2.new(1, -10, 0, 40)
-    toggle.Font = Enum.Font.SourceSansBold
-    toggle.TextSize = 18
-    toggle.TextColor3 = Color3.new(1, 1, 1)
-    toggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-    toggle.BackgroundTransparency = 0.2
-    toggle.BorderSizePixel = 0
-    local state = default
-    toggle.Text = name .. ": " .. (state and "ON" or "OFF")
-    toggle.MouseButton1Click:Connect(function()
-    state = not state
-    toggle.Text = name .. ": " .. (state and "ON" or "OFF")
-        callback(state)
-    end)
-    toggle.Parent = container.frame
-    if addCorner then
-        addCorner(toggle, 8)
-    end
+	local container = tabContainers[tabIndex]
+	if not container then return end
+
+	local frame = Instance.new("Frame")
+	frame.Size = UDim2.new(1, -10, 0, 40)
+	frame.BackgroundTransparency = 1
+	frame.BorderSizePixel = 0
+	frame.Parent = container.frame
+
+	local label = Instance.new("TextLabel", frame)
+	label.Size = UDim2.new(0.7, 0, 1, 0)
+	label.Position = UDim2.new(0, 0, 0, 0)
+	label.Text = name
+	label.Font = Enum.Font.SourceSansBold
+	label.TextSize = 18
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.BackgroundTransparency = 1
+	label.TextXAlignment = Enum.TextXAlignment.Left
+
+	local toggleButton = Instance.new("Frame", frame)
+	toggleButton.Size = UDim2.new(0, 60, 0, 25)
+	toggleButton.Position = UDim2.new(1, -65, 0.5, -12)
+	toggleButton.BackgroundColor3 = default and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(100, 0, 0)
+	toggleButton.BorderSizePixel = 0
+	addCorner(toggleButton, 12)
+
+	local toggleCircle = Instance.new("Frame", toggleButton)
+	toggleCircle.Size = UDim2.new(0.5, -4, 1, -4)
+	toggleCircle.Position = default and UDim2.new(1, -toggleCircle.Size.X.Offset - 2, 0, 2) or UDim2.new(0, 2, 0, 2)
+	toggleCircle.BackgroundColor3 = Color3.new(1, 1, 1)
+	toggleCircle.BorderSizePixel = 0
+	addCorner(toggleCircle, 12)
+
+	local state = default
+	toggleButton.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			state = not state
+			TweenService:Create(toggleButton, TweenInfo.new(0.2), {
+				BackgroundColor3 = state and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(100, 0, 0)
+			}):Play()
+			TweenService:Create(toggleCircle, TweenInfo.new(0.2), {
+				Position = state and UDim2.new(1, -toggleCircle.Size.X.Offset - 2, 0, 2) or UDim2.new(0, 2, 0, 2)
+			}):Play()
+
+			pcall(function()
+				callback(state)
+			end)
+		end
+	end)
 end
 
 function createTextBox(tabIndex, placeholderText, callback)
